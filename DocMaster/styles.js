@@ -9,7 +9,20 @@ export default styles = StyleSheet.create({
         
     },
     text: {
-        fontSize: 40,
-        color: 'blue',
-    }
+        fontSize: 20,
+        color: 'lightblue',
+    },
+    logo: {
+        width: 305,
+        height: 220,
+        marginBottom: 10,
+    },
+    input: {
+        height: 40,
+        margin: 12,
+        borderWidth: 1,
+        padding: 10,
+        width: 200,
+        borderColor: 'lightblue',
+    },
 });
