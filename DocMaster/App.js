@@ -1,18 +1,14 @@
-import { StatusBar } from 'expo-status-bar';
-import { Button, SafeAreaView, Text, View } from 'react-native';
-import styles from './styles';
-import { Image } from 'react-native';
-import Welcome from './screens/welcome-screen';
+import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import HomeStack from './navigation/stack';
-
+import ErrorBoundary from './components/error-boundary';
 
 export default function App() {
   return (
-    <NavigationContainer>
+    <ErrorBoundary>
+      <NavigationContainer>
         <HomeStack />
-    </NavigationContainer>
+      </NavigationContainer>
+    </ErrorBoundary>
   );
 }
-
-

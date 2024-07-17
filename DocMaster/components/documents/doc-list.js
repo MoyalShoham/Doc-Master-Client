@@ -4,12 +4,11 @@ import styles from '../../styles';
 import axios from 'axios';
 
 const DocList = ({ navigation }) => {
-    const [users, setUsers] = useState([]);
     const [loading, setLoading] = useState(true);
     const [user, setUser] = useState({});
 
     useEffect(() => {
-        const getUsers = async () => {
+        const getUser = async () => {
             try {
                 const response = await axios.get('http://172.20.10.4:3000/user',
                     { headers: { 'Authorization': 'Bearer ' + user.tokens[0] } }
@@ -17,7 +16,7 @@ const DocList = ({ navigation }) => {
                 const data = response.data;
                 console.log('users', data);
 
-                setUsers(data);
+                setUser(data);
                 // const user = users.map((user) => user.tokens[0] === );
                 setLoading(false);
             } catch (error) {
@@ -26,7 +25,7 @@ const DocList = ({ navigation }) => {
             }
         };
 
-        getUsers();
+        getUser();
     }, []);
 
     const renderItem = ({ item }) => {
@@ -51,7 +50,7 @@ const DocList = ({ navigation }) => {
     return (
         <View style={styles.container}>
             <FlatList
-                data={users}
+                data={user}
                 renderItem={renderItem}
                 keyExtractor={keyExtractor}
             />

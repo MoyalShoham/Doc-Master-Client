@@ -1,3 +1,4 @@
+// stack.js
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import HomeScreen from '../screens/home-screen';
 import Welcome from '../screens/welcome-screen';
@@ -13,9 +14,6 @@ const HomeStack = () => {
       <Stack.Screen name="Home-Screen" component={HomeScreen} />
       <Stack.Screen name="Details-Screen" component={DetailsScreen} />
       <Stack.Screen name="Login-Screen" component={LoginScreen} />
-     
-      {/* <Stack.Screen name="Profile" component={Profile} />
-      <Stack.Screen name="Settings" component={Settings} /> */}
     </Stack.Navigator>
   );
 }
