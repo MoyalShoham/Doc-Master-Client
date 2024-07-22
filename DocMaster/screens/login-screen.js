@@ -4,15 +4,17 @@ import { View, Text, Button, TextInput, Alert } from 'react-native';
 import * as SecureStore from 'expo-secure-store';
 import axios from 'axios';
 import styles from '../styles';
+import { SERVER_URL } from '../core/config';
 
 const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const handleLogin = async () => {
-    console.log('Email:', email);
+    // console.log('Email:', email);
+    // console.log("password", password)
     try {
-      const res = await axios.post('http://172.20.10.4:3000/user/login', {
+      const res = await axios.post(`${SERVER_URL}/user/login`, {
         email,
         password,
       });

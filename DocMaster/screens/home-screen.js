@@ -1,4 +1,4 @@
-import { Button, Text, View } from 'react-native';
+import { View } from 'react-native';
 import React from 'react';
 import styles from '../styles';
 import DocList from '../components/documents/doc-list';

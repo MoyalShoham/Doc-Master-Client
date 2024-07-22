@@ -2,7 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, FlatList } from 'react-native';
 import styles from '../../styles';
 import axios from 'axios';
+import { SERVER_URL } from '../../core/config';
+import * as SecureStore from 'expo-secure-store';
 
+
+// import {  } from 'express';
 const DocList = ({ navigation }) => {
     const [loading, setLoading] = useState(true);
     const [user, setUser] = useState({});
@@ -10,10 +14,19 @@ const DocList = ({ navigation }) => {
     useEffect(() => {
         const getUser = async () => {
             try {
-                const response = await axios.get('http://172.20.10.4:3000/user',
-                    { headers: { 'Authorization': 'Bearer ' + user.tokens[0] } }
+                // console.log('Getting users', user);\
+                const token = await SecureStore.getItemAsync('accessToken');
+                const response = await axios.get(`${SERVER_URL}/user`,
+                    { headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                }
                 );
+
+                console.log('response', response);
                 const data = response.data;
+
+            
                 console.log('users', data);
 
                 setUser(data);
