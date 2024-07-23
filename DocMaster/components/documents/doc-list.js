@@ -1,56 +1,32 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, FlatList } from 'react-native';
+import { View, Text, FlatList, Image } from 'react-native';
 import styles from '../../styles';
-import axios from 'axios';
-import { SERVER_URL } from '../../core/config';
-import * as SecureStore from 'expo-secure-store';
+import getUser from '../../data/user-fetch';
 
-
-// import {  } from 'express';
 const DocList = ({ navigation }) => {
     const [loading, setLoading] = useState(true);
-    const [user, setUser] = useState({});
+    const [posts, setPosts] = useState([]);
 
     useEffect(() => {
-        const getUser = async () => {
-            try {
-                // console.log('Getting users', user);\
-                const token = await SecureStore.getItemAsync('accessToken');
-                const response = await axios.get(`${SERVER_URL}/user`,
-                    { headers: {
-                        'Authorization': `Bearer ${token}`
-                    }
-                }
-                );
-
-                console.log('response', response);
-                const data = response.data;
-
-            
-                console.log('users', data);
-
-                setUser(data);
-                // const user = users.map((user) => user.tokens[0] === );
-                setLoading(false);
-            } catch (error) {
-                console.error(error.message);
-                setLoading(false);
-            }
+        const get = async () => {
+            const user = await getUser();
+            setPosts(user.posts);
         };
 
-        getUser();
+        get().finally(() => setLoading(false));
     }, []);
 
     const renderItem = ({ item }) => {
         return (
             <View style={styles.container}>
-                <Text style={styles.text}>{item.full_name}</Text>
-                <Text style={styles.text}>{item.email}</Text>
+                <Text>{item}</Text>
+                <Image source={{ uri: item }} style={styles.image} />
+                <Image source={{ src: item }} style={styles.image} />
             </View>
         );
     };
 
-    const keyExtractor = (item) => item._uid.toString();
+    const keyExtractor = (item, index) => index.toString();
 
     if (loading) {
         return (
@@ -63,7 +39,7 @@ const DocList = ({ navigation }) => {
     return (
         <View style={styles.container}>
             <FlatList
-                data={user}
+                data={posts}
                 renderItem={renderItem}
                 keyExtractor={keyExtractor}
             />
