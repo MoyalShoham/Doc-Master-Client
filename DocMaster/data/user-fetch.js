@@ -4,7 +4,7 @@ import * as SecureStore from 'expo-secure-store';
 
 const getUser = async () => {
     const token = await SecureStore.getItemAsync('accessToken');
-    console.log('Getting users', token);
+    // console.log('Getting users', token);
     try {
 
         

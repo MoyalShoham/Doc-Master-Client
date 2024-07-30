@@ -1,12 +1,12 @@
-import { View } from 'react-native';
 import React from 'react';
+import { View, Button } from 'react-native';
 import styles from '../styles';
 import DocList from '../components/documents/doc-list';
 
 const HomeScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
-      <DocList />
+      <DocList navigation={navigation} />
     </View>
   );
 };

@@ -23,6 +23,7 @@ const LoginScreen = ({ navigation }) => {
       if (accessToken) {
         await SecureStore.setItemAsync('accessToken', accessToken);
         console.log('Token stored successfully');
+        
         navigation.navigate('Home-Screen');
       } else {
         console.error('No token received');

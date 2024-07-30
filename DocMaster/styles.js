@@ -25,4 +25,10 @@ export default styles = StyleSheet.create({
         width: 200,
         borderColor: 'lightblue',
     },
+   
+      image: {
+        width: 200,
+        height: 200,
+        marginTop: 20,
+      },
 });
