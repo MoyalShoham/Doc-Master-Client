@@ -2,9 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Button, Image, Text, Alert } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import * as DocumentPicker from 'expo-document-picker';
-import { getAuth } from 'firebase/auth';
 import styles from '../styles';
-import { auth } from '../firebase-config';
 import { SERVER_URL } from '../core/config';
 import * as SecureStore from 'expo-secure-store';
 
