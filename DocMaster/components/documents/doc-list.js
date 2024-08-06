@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, FlatList, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import getUser from '../../data/user-fetch';
+import styles from '../../styles';
 
 const DocList = ({ navigation }) => {
     const [loading, setLoading] = useState(true);
@@ -80,7 +81,7 @@ const DocList = ({ navigation }) => {
     }
 
     return (
-        <View style={styles.container}>
+        <View style={styles.listContainer}>
             <FlatList
                 data={posts}
                 renderItem={renderItem}
@@ -89,36 +90,5 @@ const DocList = ({ navigation }) => {
         </View>
     );
 };
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        padding: 10,
-    },
-    loadingContainer: {
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    itemContainer: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        padding: 10,
-        borderBottomWidth: 1,
-        borderBottomColor: '#ccc',
-    },
-    image: {
-        width: 200,
-        height: 100,
-        resizeMode: 'contain',
-        marginRight: 10,
-    },
-    text: {
-        flex: 1,
-        fontSize: 14,
-        marginLeft: 10,
-        width: '70%',
-    },
-});
 
 export default DocList;

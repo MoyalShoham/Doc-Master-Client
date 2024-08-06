@@ -1,3 +1,4 @@
+
 import { StyleSheet } from 'react-native';
 
 export default styles = StyleSheet.create({
@@ -8,6 +9,26 @@ export default styles = StyleSheet.create({
         justifyContent: 'center',
         
     },
+    listContainer: {
+
+        flex: 1,
+        padding: 10,
+       
+    },
+
+    loadingContainer: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    itemContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        padding: 10,
+        borderBottomWidth: 1,
+        borderBottomColor: '#ccc',
+    },
+
     text: {
         fontSize: 20,
         color: 'lightblue',

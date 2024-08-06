@@ -1,15 +1,14 @@
 import React from 'react';
-import { Button, Text, View } from 'react-native';
+import { View, Text } from 'react-native';
 import DocItemDetails from '../components/documents/doc-item';
 import { useRoute } from '@react-navigation/native';
-
+import styles from '../styles';
 
 const DetailsScreen = ({ navigation }) => {
     const route = useRoute();
-    const { item } = route.params;
     return (
         <View style={styles.container}>
-            <DocItemDetails item={item}/>
+            <DocItemDetails route={route} />
         </View>
     );
 }
