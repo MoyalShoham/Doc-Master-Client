@@ -1,5 +1,5 @@
 
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Dimensions } from 'react-native';
 
 export default styles = StyleSheet.create({
     container: {
@@ -14,6 +14,17 @@ export default styles = StyleSheet.create({
         flex: 1,
         padding: 10,
        
+    },
+
+    scrollContainer: {
+        flexGrow: 1,
+    
+    },
+
+    picture:{
+        width: Dimensions.get('window').width ,
+        height: Dimensions.get('window').height / 1.5 , // Adjust height as needed
+        marginTop: 20,
     },
 
     loadingContainer: {
@@ -31,6 +42,8 @@ export default styles = StyleSheet.create({
 
     text: {
         fontSize: 20,
+        color: 'black',
+        margin: 10,
         color: 'lightblue',
     },
     logo: {
@@ -47,9 +60,24 @@ export default styles = StyleSheet.create({
         borderColor: 'lightblue',
     },
    
-      image: {
-        width: 200,
-        height: 200,
+    image: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: 100,
+        height: 100,
         marginTop: 20,
-      },
+    },
+    fileIcon: {
+        width: 80,
+        height: 100,
+        margin: 10,
+    },
+    pdf: {
+        flex: 1,
+        width: Dimensions.get('window').width,
+    },
+    webview: {
+        flex: 1,
+        width: Dimensions.get('window').width,
+    },
 });

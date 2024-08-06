@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { View } from 'react-native';
 import DocItemDetails from '../components/documents/doc-item';
 import { useRoute } from '@react-navigation/native';
 import styles from '../styles';

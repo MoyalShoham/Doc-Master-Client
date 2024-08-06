@@ -1,7 +1,7 @@
 import React from 'react';
-import { View, Button } from 'react-native';
-import styles from '../styles';
+import { View, StyleSheet } from 'react-native';
 import DocList from '../components/documents/doc-list';
+import styles from '../styles';
 
 const HomeScreen = ({ navigation }) => {
   return (

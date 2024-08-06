@@ -1,8 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, FlatList, Image, StyleSheet, TouchableOpacity } from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+import { View, Text, FlatList, Image, TouchableOpacity } from 'react-native';
 import getUser from '../../data/user-fetch';
 import styles from '../../styles';
+
+// Import local images
+const fileIcons = {
+    pdf: require('../../assets/pdf-icon.png'), // Path to your PDF icon
+    doc: require('../../assets/doc-icon.png'), // Path to your DOC/DOCX icon
+    txt: require('../../assets/txt-icon.png'), // Path to your TXT icon
+    default: require('../../assets/Logo.png') // Path to your default icon
+};
 
 const DocList = ({ navigation }) => {
     const [loading, setLoading] = useState(true);
@@ -42,6 +49,9 @@ const DocList = ({ navigation }) => {
         console.log('Rendering item:', item);
 
         const isImage = item.endsWith('.jpg') || item.endsWith('.jpeg') || item.endsWith('.png');
+        const isText = item.endsWith('.txt');
+        const isPDF = item.endsWith('.pdf');
+        const isDoc = item.endsWith('.docx') || item.endsWith('.doc');
 
         if (isImage) {
             return (
@@ -51,19 +61,21 @@ const DocList = ({ navigation }) => {
             );
         } else {
             const fileName = item.split('/').pop();
-            let iconName;
+            let iconSource;
 
-            if (item.endsWith('.pdf')) {
-                iconName = 'picture-as-pdf';
-            } else if (item.endsWith('.docx')) {
-                iconName = 'insert-drive-file';
+            if (isPDF) {
+                iconSource = fileIcons.pdf;
+            } else if (isDoc) {
+                iconSource = fileIcons.doc;
+            } else if (isText) {
+                iconSource = fileIcons.txt;
             } else {
-                iconName = 'insert-drive-file';
+                iconSource = fileIcons.default;
             }
 
             return (
                 <TouchableOpacity style={styles.itemContainer} onPress={() => navigation.navigate('Details-Screen', { item })}>
-                    <Icon name={iconName} size={50} color="#000" />
+                    <Image source={iconSource} style={styles.fileIcon} />
                     <Text style={styles.text} numberOfLines={1} ellipsizeMode="tail">{fileName}</Text>
                 </TouchableOpacity>
             );
