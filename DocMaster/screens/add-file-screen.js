@@ -1,15 +1,21 @@
 import React, { useState, useEffect } from 'react';
-import { View, Button, Image, Text, Alert } from 'react-native';
+import { View, Button, Image, Text, Alert, TextInput, ScrollView, TouchableOpacity } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import * as DocumentPicker from 'expo-document-picker';
+import DateTimePicker from '@react-native-community/datetimepicker'; // Changed Date Picker import
+import CheckBox from '@react-native-community/checkbox';
 import styles from '../styles';
 import { SERVER_URL } from '../core/config';
 import * as SecureStore from 'expo-secure-store';
 
 const AddFileScreen = ({ navigation }) => {
   const [fileUri, setFileUri] = useState(null);
-  const [fileType, setFileType] = useState(null); // To differentiate between image and document
+  const [fileType, setFileType] = useState(null);
   const [uploading, setUploading] = useState(false);
+  const [fileName, setFileName] = useState('');
+  const [expirationDate, setExpirationDate] = useState(null);
+  const [showDatePicker, setShowDatePicker] = useState(false); // Changed open to showDatePicker
+  const [reminder, setReminder] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -36,7 +42,7 @@ const AddFileScreen = ({ navigation }) => {
 
   const handleDocumentPicker = async () => {
     const result = await DocumentPicker.getDocumentAsync({
-      type: '*/*', // You can specify types here if you want
+      type: '*/*',
     });
 
     console.log('Document picker result:', result);
@@ -65,6 +71,11 @@ const AddFileScreen = ({ navigation }) => {
         name: uri.split('/').pop(),
       });
       formData.append('user', token);
+      formData.append('name', fileName);
+      if (expirationDate) {
+        formData.append('expiration_date', expirationDate.toISOString());
+      }
+      formData.append('reminder', reminder);
 
       console.log('FormData prepared:', formData);
 
@@ -97,8 +108,20 @@ const AddFileScreen = ({ navigation }) => {
     }
   };
 
+  // Function to handle the date change from the DatePicker
+  const handleDateChange = (event, selectedDate) => {
+    setShowDatePicker(false);
+    if (selectedDate) {
+      setExpirationDate(selectedDate);
+      // Reset the reminder checkbox if the date is in the past or not set
+      if (selectedDate < new Date()) {
+        setReminder(false);
+      }
+    }
+  };
+
   return (
-    <View style={styles.container}>
+    <ScrollView contentContainerStyle={styles.container}>
       <Button title="Select from Gallery" onPress={handleImagePicker} />
       <Button title="Pick a Document" onPress={handleDocumentPicker} />
       {fileUri ? (
@@ -109,6 +132,34 @@ const AddFileScreen = ({ navigation }) => {
             <Text>Document URI: {fileUri}</Text>
           )}
           <Text>File URI: {fileUri}</Text>
+          <TextInput
+            placeholder="File Name"
+            value={fileName}
+            onChangeText={setFileName}
+            style={styles.input}
+          />
+          <TouchableOpacity onPress={() => setShowDatePicker(true)}>
+            <Text style={styles.input}>
+              {expirationDate ? expirationDate.toDateString() : 'Pick Expiration Date'}
+            </Text>
+          </TouchableOpacity>
+          {showDatePicker && (
+            <DateTimePicker
+              value={expirationDate || new Date()}
+              mode="date"
+              display="default"
+              onChange={handleDateChange}
+            />
+          )}
+          <View style={styles.checkboxContainer}>
+            <CheckBox
+              value={reminder}
+              onValueChange={setReminder}
+              style={styles.checkbox}
+              disabled={!expirationDate || expirationDate < new Date()} // Disable if no date or past date
+            />
+            <Text style={styles.label}>Set Reminder</Text>
+          </View>
           <Button
             title="Upload File"
             onPress={() => uploadFile(fileUri, fileType)}
@@ -118,7 +169,7 @@ const AddFileScreen = ({ navigation }) => {
       ) : (
         <Text>No file selected</Text>
       )}
-    </View>
+    </ScrollView>
   );
 };
 

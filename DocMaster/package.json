@@ -11,6 +11,8 @@
   "dependencies": {
     "@firebase/storage": "^0.12.6",
     "@react-native-async-storage/async-storage": "^1.24.0",
+    "@react-native-community/checkbox": "^0.5.17",
+    "@react-native-community/datetimepicker": "^8.2.0",
     "@react-navigation/native": "^6.1.17",
     "@react-navigation/native-stack": "^6.10.0",
     "axios": "^1.7.2",
@@ -25,6 +27,7 @@
     "react": "18.2.0",
     "react-native": "0.74.3",
     "react-native-blob-util": "^0.19.11",
+    "react-native-date-picker": "^5.0.4",
     "react-native-document-picker": "^9.3.0",
     "react-native-image-picker": "^7.1.2",
     "react-native-pdf": "^6.7.5",

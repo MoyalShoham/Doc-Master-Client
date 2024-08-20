@@ -1,12 +1,12 @@
+// doc-item.js
+
 import React from 'react';
-import { View, StyleSheet, Dimensions, Text, ScrollView, Image, Linking } from 'react-native';
+import { View, Text, ScrollView, Image, Linking } from 'react-native';
 import Pdf from 'react-native-pdf';
 import { WebView } from 'react-native-webview';
 import styles from '../../styles';
 
-
-
-const DocItemDetails = ({ route }) => {
+const DocItemDetails = ({ route, navigation }) => {
     const { item } = route.params;
     const fileType = item.split('.').pop().toLowerCase(); // Ensuring fileType is in lowercase
 
@@ -14,35 +14,26 @@ const DocItemDetails = ({ route }) => {
         switch (fileType) {
             case 'txt':
                 return (
-                    <ScrollView
-                        contentContainerStyle={styles.scrollContainer}
-                    >
+                    <ScrollView contentContainerStyle={styles.scrollContainer}>
                         <Text style={styles.text}>{item}</Text>
                     </ScrollView>
                 );
             case 'pdf':
-                // Use WebView for PDFs as well
                 console.log('PDF file:', item);
                 return (
-                    // <WebView
-                    //     source={{ uri: item }}
-                    //     style={styles.webview}
-                    // />
                     <Pdf
                         trustAllCerts={false}
                         source={{ uri: item, cache: true }}
                         onLoadComplete={(numberOfPages, filePath) => {
                             console.log(`Number of pages: ${numberOfPages}`);
                         }}
-                        onPageChanged={(page, numberOfPages) => {
-                        }}
+                        onPageChanged={(page, numberOfPages) => {}}
                         onError={(error) => {
                             console.error('PDF Error:', error);
                         }}
                         onPressLink={(uri) => {
                             console.log('Link Pressed:', uri);
                             Linking.openURL(uri);
-                            
                         }}
                         style={styles.pdf}
                     />
@@ -51,7 +42,9 @@ const DocItemDetails = ({ route }) => {
             case 'docx':
                 return (
                     <WebView
-                        source={{ uri: `https://view.officeapps.live.com/op/embed.aspx?src=${item}` }}
+                        source={{
+                            uri: `https://view.officeapps.live.com/op/embed.aspx?src=${item}`,
+                        }}
                         style={styles.webview}
                     />
                 );
@@ -63,7 +56,7 @@ const DocItemDetails = ({ route }) => {
                     <Image
                         source={{ uri: item }}
                         style={styles.picture}
-                        resizeMode="contain" // Adjusts the image to fit within the container while maintaining aspect ratio
+                        resizeMode="contain"
                     />
                 );
             default:
@@ -71,11 +64,7 @@ const DocItemDetails = ({ route }) => {
         }
     };
 
-    return (
-        <View style={styles.container}>
-            {renderDocument()}
-        </View>
-    );
+    return <View style={styles.container}>{renderDocument()}</View>;
 };
 
 export default DocItemDetails;
