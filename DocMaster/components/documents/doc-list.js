@@ -52,15 +52,17 @@ const DocList = ({ navigation }) => {
         const isText = item.endsWith('.txt');
         const isPDF = item.endsWith('.pdf');
         const isDoc = item.endsWith('.docx') || item.endsWith('.doc');
-
+        const fileName = item.split('/').pop();
+        
         if (isImage) {
             return (
                 <TouchableOpacity style={styles.itemContainer} onPress={() => navigation.navigate('Details-Screen', { item })}>
                     <Image source={{ uri: item }} style={styles.image} />
+                    <Text style={styles.text} numberOfLines={1} ellipsizeMode="tail">{fileName}</Text>
                 </TouchableOpacity>
             );
         } else {
-            const fileName = item.split('/').pop();
+           
             let iconSource;
 
             if (isPDF) {

@@ -10,28 +10,20 @@ import DocItemDetails from '../components/documents/doc-item';
 import AddFileScreen from '../screens/add-file-screen';
 import EditFileScreen from '../screens/edit-file-screen';
 import { Button } from 'react-native';
+import { navOptions } from './options';
+import { useNavigation } from '@react-navigation/native';
 
 const Stack = createNativeStackNavigator();
-
 const HomeStack = () => {
+  const nav = useNavigation();
   return (
-    <Stack.Navigator>
+    <Stack.Navigator screenOptions={() => navOptions(nav)}>
       <Stack.Screen name="Welcome" component={Welcome} />
       <Stack.Screen
         name="Home-Screen"
         component={HomeScreen}
-        options={({ navigation }) => ({
-          title: 'Home',
-          headerRight: () => (
-            <Button
-              onPress={() => navigation.navigate('Add-File-Screen')}
-              title="Add"
-              color="#000"
-            />
-          ),
-        })}
+        options={{ title: 'Home' }}
       />
-      {/* <Stack.Screen name="Details-Screen" component={DetailsScreen} /> */}
       <Stack.Screen name="Add-File-Screen" component={AddFileScreen} />
       <Stack.Screen
         name="Details-Screen"

@@ -1,6 +1,5 @@
-// login-screen.js
-import React, { useState } from 'react';
-import { View, Text, Button, TextInput, Alert } from 'react-native';
+import React, { useLayoutEffect, useState } from 'react';
+import { View, Text, TextInput, Alert, TouchableOpacity } from 'react-native';
 import * as SecureStore from 'expo-secure-store';
 import axios from 'axios';
 import styles from '../styles';
@@ -10,9 +9,15 @@ const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerTitle: 'Account Login',
+      headerTitleAlign: 'center',
+      
+    });
+  }, [navigation]);
+
   const handleLogin = async () => {
-    // console.log('Email:', email);
-    // console.log("password", password)
     try {
       const res = await axios.post(`${SERVER_URL}/user/login`, {
         email,
@@ -51,8 +56,17 @@ const LoginScreen = ({ navigation }) => {
         value={password}
         onChangeText={setPassword}
       />
-      <Button title="Login" onPress={handleLogin} />
-      <Button title="Go to Home" onPress={() => navigation.navigate('Home-Screen')} />
+      
+      <TouchableOpacity style={styles.button} onPress={handleLogin}>
+        <Text style={styles.buttonText}>Login</Text>
+      </TouchableOpacity>
+
+      <Text style={styles.text}>
+        Don't have an account?{' '}
+        <Text style={styles.link} onPress={() => navigation.navigate('Signup-Screen')}>
+          Sign Up
+        </Text>
+      </Text>
     </View>
   );
 };

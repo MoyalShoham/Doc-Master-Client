@@ -26,6 +26,22 @@ export default styles = StyleSheet.create({
         height: Dimensions.get('window').height / 1.5 , // Adjust height as needed
         marginTop: 20,
     },
+    button:{
+        backgroundColor: '#457ea8',
+        width: '50%',
+        padding: 10,
+        margin: 2,
+        borderRadius: 10,
+        alignItems: 'center',
+        fontStyle: 'bold',
+        height: 50,
+        
+    },
+    buttonText:{
+        fontSize: 20,
+        fontStyle: 'bold',
+        color: 'white',
+    },
 
     loadingContainer: {
         flex: 1,
@@ -42,22 +58,29 @@ export default styles = StyleSheet.create({
 
     text: {
         fontSize: 20,
-        color: 'black',
         margin: 10,
-        color: 'lightblue',
+        color: '#457ea8',
     },
     logo: {
         width: 305,
         height: 220,
         marginBottom: 10,
     },
+    link: {
+        color: 'blue',
+        textDecorationLine: 'underline',
+    },
+
     input: {
-        height: 40,
-        margin: 12,
+        height: 45,
+        margin: 6,
         borderWidth: 1,
         padding: 10,
-        width: 200,
+        width: 280,
         borderColor: 'lightblue',
+        borderRadius: 10,
+        
+
     },
    
     image: {
@@ -68,8 +91,8 @@ export default styles = StyleSheet.create({
         marginTop: 20,
     },
     fileIcon: {
-        width: 80,
-        height: 100,
+        width: 110,
+        height: 110,
         margin: 10,
     },
     pdf: {
