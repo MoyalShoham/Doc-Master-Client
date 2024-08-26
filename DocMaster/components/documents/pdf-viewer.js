@@ -4,6 +4,7 @@ import Pdf from 'react-native-pdf';
 import styles from '../../styles';
 
 const PdfViewer = ({ fileUri }) => {
+    console.log('PDF file:', fileUri);
     return (
         <View style={styles.container}>
             <Pdf
