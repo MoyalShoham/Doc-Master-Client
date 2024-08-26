@@ -3,7 +3,7 @@ import { StyleSheet, Dimensions } from 'react-native';
 export default styles = StyleSheet.create({
     likeButton: {
         marginRight: 20,
-        backgroundColor: '#457ea8', // Temporary background color for debugging
+        backgroundColor: '#fff', // Temporary background color for debugging
         borderRadius: 10,        // Adjusted border radius
         padding: 10,             // Increased padding
         borderWidth: 1,          // Added border for visibility

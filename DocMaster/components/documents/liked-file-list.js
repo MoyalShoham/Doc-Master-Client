@@ -13,7 +13,7 @@ const fileIcons = {
     default: require('../../assets/Logo.png')
 };
 
-const DocList = ({ navigation }) => {
+const LikedDocsList = ({ navigation }) => {
     const [loading, setLoading] = useState(true);
     const [posts, setPosts] = useState([]);
     const [refreshing, setRefreshing] = useState(false);
@@ -26,7 +26,7 @@ const DocList = ({ navigation }) => {
     const onRefresh = () => {
         setRefreshing(true);
         getUser().then(user => {
-            const correctedPosts = (user.posts || []).map(post => {
+            const correctedPosts = (user.likedDocs || []).map(post => {
                 if (post && typeof post.url === 'string') {
                     const tmp = post.url.split('storage.googleapis.com/');
                     return `https://storage.googleapis.com/${tmp[1]}`;
@@ -166,4 +166,4 @@ const DocList = ({ navigation }) => {
     );
 };
 
-export default DocList;
+export default LikedDocsList;

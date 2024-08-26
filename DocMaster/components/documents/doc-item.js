@@ -1,14 +1,56 @@
-// doc-item.js
-
-import React from 'react';
-import { View, Text, ScrollView, Image, Linking } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Text, ScrollView, Image, Linking, TouchableOpacity } from 'react-native';
 import Pdf from 'react-native-pdf';
 import { WebView } from 'react-native-webview';
 import styles from '../../styles';
+import axios from 'axios';
+import { SERVER_URL } from '../../core/config';
+import * as SecureStore from 'expo-secure-store';
+import { FontAwesome } from '@expo/vector-icons';
 
 const DocItemDetails = ({ route, navigation }) => {
     const { item } = route.params;
+    const [isLiked, setIsLiked] = useState(false);
     const fileType = item.split('.').pop().toLowerCase(); // Ensuring fileType is in lowercase
+
+    useEffect(() => {
+        const fetchIsLiked = async () => {
+            try {
+                const token = await SecureStore.getItemAsync('accessToken');
+                const response = await axios.post(`${SERVER_URL}/user/getMetadata`, { item }, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`,
+                    },
+                });
+                setIsLiked(response.data.metadata.customMetadata.isLiked === 'true');
+            } catch (error) {
+                console.error('Error getting metadata:', error);
+            }
+        };
+
+        fetchIsLiked();
+    }, [item]);
+
+    const handleLikeUnlike = async () => {
+        const token = await SecureStore.getItemAsync('accessToken');
+        const endpoint = isLiked ? 'unlike' : 'like';
+
+        try {
+            await axios.post(`${SERVER_URL}/user/${endpoint}`, {
+                fileUrl: item,
+            }, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`,
+                },
+            });
+
+            setIsLiked(!isLiked);
+        } catch (error) {
+            console.error('Error liking/unliking document:', error);
+        }
+    };
 
     const renderDocument = () => {
         switch (fileType) {
@@ -19,7 +61,6 @@ const DocItemDetails = ({ route, navigation }) => {
                     </ScrollView>
                 );
             case 'pdf':
-                console.log('PDF file:', item);
                 return (
                     <Pdf
                         trustAllCerts={false}
@@ -27,7 +68,6 @@ const DocItemDetails = ({ route, navigation }) => {
                         onLoadComplete={(numberOfPages, filePath) => {
                             console.log(`Number of pages: ${numberOfPages}`);
                         }}
-                        onPageChanged={(page, numberOfPages) => {}}
                         onError={(error) => {
                             console.error('PDF Error:', error);
                         }}
@@ -64,7 +104,21 @@ const DocItemDetails = ({ route, navigation }) => {
         }
     };
 
-    return <View style={styles.container}>{renderDocument()}</View>;
+    return (
+        <View style={styles.container}>
+            {renderDocument()}
+            <TouchableOpacity
+                onPress={handleLikeUnlike}
+                style={{ position: 'absolute', top: 10, right: 10, borderRadius: 10, padding: 10, borderStyle: 'solid', borderWidth: 2, borderColor: 'gray' }}
+            >
+                <FontAwesome
+                    name={isLiked ? 'star' : 'star-o'}
+                    size={30}
+                    color={isLiked ? 'gold' : 'black'}
+                />
+            </TouchableOpacity>
+        </View>
+    );
 };
 
 export default DocItemDetails;

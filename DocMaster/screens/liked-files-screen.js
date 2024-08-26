@@ -2,7 +2,7 @@
 
 import React, { useLayoutEffect } from 'react';
 import { View, Button, StyleSheet } from 'react-native';
-import DocList from '../components/documents/doc-list';
+import LikedDocList from '../components/documents/liked-file-list';
 import { Ionicons } from '@expo/vector-icons';
 import axios from 'axios';
 import { SERVER_URL } from '../core/config';
@@ -11,21 +11,21 @@ import { SERVER_URL } from '../core/config';
 
 
 
-const HomeScreen = ({ navigation }) => {
+const LikedDocScreen = ({ navigation }) => {
 
  
   useLayoutEffect(() => {
     navigation.setOptions({
-      headerTitle: 'Home',
+      headerTitle: 'Liked Files',
       headerTitleAlign: 'center',
       headerRight: 
         () => (
           <Ionicons
-            name="menu"
+            name="arrow-back"
             size={32}
             color="black"
             style={{ marginLeft: 10 }}
-            onPress={() => navigation.openDrawer()}
+            onPress={() => navigation.navigate('Home-Screen')}  
           />
         )
       
@@ -33,12 +33,8 @@ const HomeScreen = ({ navigation }) => {
   }, [navigation]);
     return (
         <View style={styles.container}>
-            <Button
-                title="Add File"
-                onPress={() => navigation.navigate('Add-File-Screen')}
-                color="#0f4f80"
-            />
-            <DocList navigation={navigation} />
+           
+            <LikedDocList navigation={navigation} />
 
           
         </View>
@@ -52,4 +48,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default HomeScreen;
+export default LikedDocScreen;
