@@ -1,4 +1,4 @@
-package com.shoham.DocMaster
+package com.shoham.docmaster
 
 import android.os.Build
 import android.os.Bundle

@@ -1,0 +1,13 @@
+{
+  "expo": {
+    "name": "doc-master-client",
+    "slug": "doc-master-client",
+    "version": "1.0.0",
+    "description": "",
+    "sdkVersion": "51.0.0",
+    "platforms": [],
+    "android": {
+      "package": "com.shoham.docmaster"
+    }
+  }
+}

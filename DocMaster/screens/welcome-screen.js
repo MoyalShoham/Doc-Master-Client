@@ -23,6 +23,13 @@ const Welcome = ({ navigation }) => {
                 <Text style={styles.buttonText}>Sign-up</Text>
             </TouchableOpacity>
 
+            <TouchableOpacity
+                style={styles.button}
+                onPress={() => navigation.navigate('Google-Signin-Screen')}
+            >
+                <Text style={styles.buttonText}>Google Sign-in</Text>
+            </TouchableOpacity>
+
             <StatusBar style="auto" />
         </View>
     );

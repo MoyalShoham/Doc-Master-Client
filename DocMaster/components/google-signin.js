@@ -1,46 +1,74 @@
-import {Button, SafeAreaView, Text, View, TouchableOpacity} from 'react-native';
-import {Ionicons} from '@expo/vector-icons';
-import { AntDesign } from '@expo/vector-icons';
-
-export default function GoogleSignIn({promptAsync}) {
-  return (
-    <SafeAreaView style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}
-    >
-      <Ionicons name="logo-firebase" size={100} color="#FFA611" />
-      <Text style={{fontSize: 32, fontWeight: 'bold', color: '#FFA611'}}>
-        Sign In With {' '}
-        <Text style={{color: '#4285F4'}}>
-          G<Text style={{color: '#Ea4336'}}>
-            o<Text style={{color: '#FBBC04'}}>
-              o<Text style={{color: '#4285F4'}}>
-                g<Text style={{color: '#34A853'}}>
-                  l<Text style={{color: '#Ea4336'}}>
-                    e
-                    </Text>
-                  </Text>
-                </Text>
-              </Text>
-            </Text>
-          </Text>
-        </Text>
-        <Text style={{ fontSize: 32, fontWeight: 'bold' }}>And Firebase</Text>
-        <TouchableOpacity
-          style={{
-            backgroundColor: '#4285F4',
-            padding: 10,
-            borderRadius: 10,
-            marginTop: 20,
-            flexDirection: 'row',
-            alignItems: 'center',
-          }}
-          onPress={() => promptAsync()}
-        >
-          <AntDesign name="google" size={30} color="white" />
-          <Text style={{ color: 'white', marginLeft: 10, fontSize: 20 }}>
-            Sign In With Google
-          </Text>
-        </TouchableOpacity> 
-    </SafeAreaView>
-  )
+import React, { useEffect } from 'react';
+import { TouchableOpacity, StyleSheet, Alert} from 'react-native';
+import * as WebBrowser from 'expo-web-browser';
+import firebase from 'firebase/app';
+import {
+  GoogleAuthProvider,
+  signInWithCredential,
+  signOut
+} from 'firebase/auth';
+import * as Google from 'expo-auth-session/providers/google';
+import { GoogleLogo } from '../assets/icons';
+import { theme } from '../core/theme';
+import { ANDROID_GOOGLE_CLIENT_ID, WEB_GOOGLE_CLIENT_ID, IOS_GOOGLE_CLIENT_ID} from '../core/config';
+import { auth } from '../core/firebaseConfig';
+import { useNavigation } from '@react-navigation/native';
+import axios from 'axios';
+import clientApi from '../api/ClientApi';
+WebBrowser.maybeCompleteAuthSession();
+export default function GoogleLogin() {
+  const [userinfo, setUserinfo] = React.useState();
+  const [request, response, promptAsync] = Google.useIdTokenAuthRequest({
+    androidClientId: ANDROID_GOOGLE_CLIENT_ID,
+    iosClientId: IOS_GOOGLE_CLIENT_ID,
+    webClientId: WEB_GOOGLE_CLIENT_ID,
+  });
+  const navigationr = useNavigation();
+  React.useEffect(() => {
+    if (response?.type === 'success') {
+      const { id_token } = response.params;
   
-};
+      const credential = GoogleAuthProvider.credential(id_token);
+  
+      signInWithCredential(auth, credential)
+        .then((result) => {
+          const user = result.user;
+          console.log('Successfully signed in with Google', user.email);
+          clientApi.post('/signInGoogle', { user });
+          // axios.post('https://backend-app-jbun.onrender.com/signInGoogle', { user });
+          Alert.alert('Logged in!',`You are now logged in as ${user.email}`);
+          navigationr.navigate('Root' ,{ screen: 'Home' });
+        })
+        .catch((error) => {
+          console.error('Error signing in with Google', error);
+        });
+    }
+  }, [response]);
+  const handleGoogleSignIn = async () => {
+    // Clear Firebase session before signing in
+    await signOut(auth);
+    // Initiate Google sign-in
+    promptAsync();
+    
+  };
+  return (
+    <TouchableOpacity style={styles.container} onPress={handleGoogleSignIn}>
+      <GoogleLogo />
+    </TouchableOpacity>
+  );
+}
+const styles = StyleSheet.create({
+  container: {
+    borderColor: theme.colors.google,
+    backgroundColor: theme.colors.surface,
+    borderStyle: 'solid',
+    borderWidth: 1,
+    borderRadius: 8,
+    width: 50,
+    marginVertical: 10,
+    height: 48,
+    alignItems: 'center',
+    justifyContent: 'center',
+    margin: 8,
+  },
+}); 

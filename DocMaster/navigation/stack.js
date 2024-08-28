@@ -14,6 +14,7 @@ import { SERVER_URL } from '../core/config';
 import * as SecureStore from 'expo-secure-store';
 import LikedDocScreen from '../screens/liked-files-screen';
 import RemindersScreen from '../screens/reminders-screen';
+import GoogleSignIn from '../screens/google-signin-screen';
 
 const Stack = createNativeStackNavigator();
 
@@ -56,6 +57,11 @@ export const HomeStack = () => {
         name="Welcome"
         component={Welcome}
         options={{ title: 'Welcome' }}
+      />
+      <Stack.Screen
+        name="Google-Signin-Screen"
+        component={GoogleSignIn}
+        options={{ title: 'Google Sign-in' }}
       />
       <Stack.Screen
         name="Home-Screen"
