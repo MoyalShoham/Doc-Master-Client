@@ -4,6 +4,8 @@ import axios from "axios";
 import * as SecureStore from 'expo-secure-store';
 import { SERVER_URL } from "../core/config";
 import styles from '../styles';
+// import GoogleSignInComp from '../components/google-signin';
+
 
 
 const SignupScreen = ({ navigation }) => {
@@ -104,7 +106,7 @@ const SignupScreen = ({ navigation }) => {
     </Text>
  
 
-      {/* <GoogleSignIn /> */}
+      {/* <GoogleSignInComp /> */}
     </View>
   );
 };

@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "DocMaster",
-    "slug": "DocMaster",
+    "slug": "docmaster",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -15,17 +15,24 @@
       "supportsTablet": true
     },
     "android": {
+      "package": "com.shoham.DocMaster",
+      "versionCode": 1,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      },
-      "package": "com.shoham.DocMaster"
+      }
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
     "plugins": [
       "expo-secure-store"
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "c0c29fe3-94b2-49bd-8fe2-1c1726614717"
+      }
+    },
+    "scheme": "docmaster"
   }
 }

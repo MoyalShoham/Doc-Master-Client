@@ -12,10 +12,12 @@ import { MaterialIcons, Feather } from '@expo/vector-icons';
 import axios from 'axios';
 import { SERVER_URL } from '../core/config';
 import * as SecureStore from 'expo-secure-store';
+import LikedDocScreen from '../screens/liked-files-screen';
+import RemindersScreen from '../screens/reminders-screen';
 
 const Stack = createNativeStackNavigator();
 
-const HomeStack = () => {
+export const HomeStack = () => {
   const handleDelete = async (item, navigation) => {
     Alert.alert('Delete', 'Are you sure you want to delete this document?', [
       {
@@ -105,4 +107,111 @@ const HomeStack = () => {
   );
 };
 
-export default HomeStack;
+
+export const LikedStack = () => {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen
+        name="Liked"
+        component={LikedDocScreen}
+        options={{ title: 'Liked Files' }}
+      />
+      <Stack.Screen
+        name="Details-Screen"
+        component={DocItemDetails}
+        options={({ route, navigation }) => ({
+          title: 'Document Details',
+          headerRight: () => (
+            <View style={{ flexDirection: 'row' }}>
+              <TouchableOpacity
+                onPress={() =>
+                  navigation.navigate('Edit-File-Screen', { item: route.params.item })
+                }
+                style={{ marginRight: 10 }}
+              >
+                <Feather name="edit" size={24} color="black" />
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => handleDelete(route.params.item, navigation)}
+                style={{ marginRight: 10 }}
+              >
+                <MaterialIcons name="delete" size={24} color="red" />
+              </TouchableOpacity>
+            </View>
+          ),
+        })}
+      />
+       <Stack.Screen
+        name="Edit-File-Screen"
+        component={EditFileScreen}
+      />
+    </Stack.Navigator>
+  );
+}
+
+export const RemindersStack = () => {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen
+        name="Reminders"
+        component={RemindersScreen}
+        options={{ title: 'Reminders' }}
+      />
+      <Stack.Screen
+        name="Details-Screen"
+        component={DocItemDetails}
+        options={({ route, navigation }) => ({
+          title: 'Document Details',
+          headerRight: () => (
+            <View style={{ flexDirection: 'row' }}>
+              <TouchableOpacity
+                onPress={() =>
+                  navigation.navigate('Edit-File-Screen', { item: route.params.item })
+                }
+                style={{ marginRight: 10 }}
+              >
+                <Feather name="edit" size={24} color="black" />
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => handleDelete(route.params.item, navigation)}
+                style={{ marginRight: 10 }}
+              >
+                <MaterialIcons name="delete" size={24} color="red" />
+              </TouchableOpacity>
+            </View>
+          ),
+        })}
+      />
+      <Stack.Screen
+        name="Edit-File-Screen"
+        component={EditFileScreen}
+      />
+
+    </Stack.Navigator>
+  );
+}
+
+export const LogoutStack = () => {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen
+        name="Logout"
+        component={RemindersScreen}
+        options={{ title: 'Logout' }}
+      />
+        <Stack.Screen
+        name="Welcome"
+        component={Welcome}
+        options={{ title: 'Welcome' }}
+      />
+       <Stack.Screen
+        name="Login-Screen"
+        component={LoginScreen}
+      />
+      <Stack.Screen
+        name="Signup-Screen"
+        component={SignupScreen}
+      />
+    </Stack.Navigator>
+  );
+}

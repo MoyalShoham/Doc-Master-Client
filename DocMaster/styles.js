@@ -3,11 +3,11 @@ import { StyleSheet, Dimensions } from 'react-native';
 export default styles = StyleSheet.create({
     likeButton: {
         marginRight: 20,
-        backgroundColor: '#fff', // Temporary background color for debugging
-        borderRadius: 10,        // Adjusted border radius
-        padding: 10,             // Increased padding
-        borderWidth: 1,          // Added border for visibility
-        borderColor: '#000',     // Border color for debugging
+        backgroundColor: '#fff',
+        borderRadius: 10,
+        padding: 10,
+        borderWidth: 1,
+        borderColor: '#000',
     },
     itemContainer: {
         flexDirection: 'row',
@@ -15,7 +15,7 @@ export default styles = StyleSheet.create({
         padding: 10,
         borderBottomWidth: 1,
         borderBottomColor: '#ccc',
-        justifyContent: 'space-between', // Space between file content and like button
+        justifyContent: 'space-between',
     },
     itemContent: {
         flexDirection: 'row',
@@ -27,7 +27,7 @@ export default styles = StyleSheet.create({
         color: '#457ea8',
     },
     image: {
-        width: 100,
+        width: 80,
         height: 100,
         marginTop: 20,
     },
@@ -47,10 +47,10 @@ export default styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     },
-    listContainer: {
-        flex: 1,
-        padding: 10,
-    },
+    // listContainer: {
+    //     flex: 1,
+    //     padding: 10,
+    // },
     scrollContainer: {
         flexGrow: 1,
     },
@@ -99,5 +99,24 @@ export default styles = StyleSheet.create({
     webview: {
         flex: 1,
         width: Dimensions.get('window').width,
+    },
+    gridItemContainer: {
+        flex: 1,
+        flexDirection: 'column',
+        alignItems: 'center',
+        margin: 10,
+        padding: 10,
+        borderWidth: 1,
+        borderColor: '#ccc',
+        borderRadius: 10,
+    },
+    gridItemContent: {
+        flexDirection: 'column',
+        alignItems: 'center',
+    },
+    gridImage: {
+        width: Dimensions.get('window').width / 3 - 30,
+        height: 100,
+        marginBottom: 10,
     },
 });
