@@ -118,7 +118,7 @@ export const LikedStack = () => {
   return (
     <Stack.Navigator>
       <Stack.Screen
-        name="Liked"
+        name="Liked-Stack"
         component={LikedDocScreen}
         options={{ title: 'Liked Files' }}
       />
@@ -159,7 +159,7 @@ export const RemindersStack = () => {
   return (
     <Stack.Navigator>
       <Stack.Screen
-        name="Reminders"
+        name="Reminders-Stack"
         component={RemindersScreen}
         options={{ title: 'Reminders' }}
       />

@@ -20,19 +20,22 @@ const DocList = ({ navigation, isTableView }) => {
     const [token, setToken] = useState('');
 
     useEffect(() => {
+     
         const fetchUser = async () => {
             try {
                 const user = await getUser();
-                const correctedPosts = (user.posts || []).map(post => {
-                    if (post && typeof post.url === 'string') {
-                        const tmp = post.url.split('storage.googleapis.com/');
-                        return `https://storage.googleapis.com/${tmp[1]}`;
-                    }
-                    return post;
-                });
-                setPosts(correctedPosts);
-                setLikedFiles(new Set(user.likedDocs || []));
-                setToken(user.token);
+                if (user){
+                    const correctedPosts = (user?.posts || []).map(post => {
+                        if (post && typeof post.url === 'string') {
+                            const tmp = post.url.split('storage.googleapis.com/');
+                            return `https://storage.googleapis.com/${tmp[1]}`;
+                        }
+                        return post;
+                    });
+                    setPosts(correctedPosts);
+                    setLikedFiles(new Set(user?.likedDocs || []));
+                    setToken(user.token);
+                }
             } catch (error) {
                 console.error("Failed to fetch user data", error);
             } finally {
@@ -43,9 +46,10 @@ const DocList = ({ navigation, isTableView }) => {
     }, []);
 
     const onRefresh = () => {
+        
         setRefreshing(true);
         getUser().then(user => {
-            const correctedPosts = (user.posts || []).map(post => {
+            const correctedPosts = (user?.posts || []).map(post => {
                 if (post && typeof post.url === 'string') {
                     const tmp = post.url.split('storage.googleapis.com/');
                     return `https://storage.googleapis.com/${tmp[1]}`;

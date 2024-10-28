@@ -1,80 +1,67 @@
-import { Button, SafeAreaView, Text, View, TouchableOpacity } from 'react-native';
 import React, { useState, useEffect } from 'react';
-import { Ionicons } from '@expo/vector-icons';
-import { AntDesign } from '@expo/vector-icons';
+import { SafeAreaView, Text, TouchableOpacity } from 'react-native';
+import { Ionicons, AntDesign } from '@expo/vector-icons';
 import * as Google from 'expo-auth-session/providers/google';
 import * as WebBrowser from 'expo-web-browser';
-import { GoogleAuthProvider, onAuthStateChanged, signInWithCredential } from 'firebase/auth';
-import { WEB_CLIENT_ID, ANDROID_CLIENT_ID, auth } from '../core/fire-base-config';
+import { GoogleAuthProvider, signInWithCredential, onAuthStateChanged } from 'firebase/auth';
 import * as SecureStore from 'expo-secure-store';
 import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
 import { SERVER_URL } from '../core/config';
+import { auth } from '../core/fire-base-config';
+import { doc, getDoc, setDoc } from 'firebase/firestore';
+// import { db } from '../core/firebaseConfig';
+import {ANDROID_GOOGLE_CLIENT_ID, WEB_GOOGLE_CLIENT_ID} from '../core/config';
 
 WebBrowser.maybeCompleteAuthSession();
 
 export default function GoogleSignIn() {
-  const navigation = useNavigation();
   const [userInfo, setUserInfo] = useState();
   const [request, response, promptAsync] = Google.useAuthRequest({
-    androidClientId: ANDROID_CLIENT_ID,
-    webClientId: WEB_CLIENT_ID,
-    redirectUri: `com.shoham.docmaster:/oauth2redirect/${ANDROID_CLIENT_ID}`,
+    androidClientId: ANDROID_GOOGLE_CLIENT_ID,
+    webClientId: WEB_GOOGLE_CLIENT_ID,
   });
+  const navigation = useNavigation();
 
   useEffect(() => {
-    if (response?.type === 'success') {
-      const { id_token } = response.params;
-      console.log('id_token:', id_token);
-      const credential = GoogleAuthProvider.credential(id_token);
-      signInWithCredential(auth, credential);
-    }
-  }, [response]);
-
-  useEffect(() => {
-    const checkLocalUser = async () => {
-      try {
-        const userJSON = await SecureStore.getItemAsync('accessToken');
-        const userData = userJSON ? JSON.parse(userJSON) : null;
-        setUserInfo(userData);
-      } catch (error) {
-        console.error('Error getting user:', error);
+    const handleResponse = async () => {
+      if (response?.type === 'success') {
+        const { id_token } = response.params;
+        console.log('id_token:', id_token);
+        const credential = GoogleAuthProvider.credential(id_token);
+        await signInWithCredential(auth, credential);
+        console.log('Successfully signed in with Google', response);
+        navigation.navigate('Home-Screen');
+        
       }
     };
+    handleResponse();
+  }, [response]);
 
-    checkLocalUser();
+  // useEffect(() => {
+  //   // const checkLocalUser = async () => {
+  //   //   try {
+  //   //     const userJSON = await SecureStore.getItemAsync('accessToken');
+  //   //     const userData = userJSON ? JSON.parse(userJSON) : null;
+  //   //     setUserInfo(userData);
+  //   //   } catch (error) {
+  //   //     console.error('Error getting user:', error);
+  //   //   }
+  //   // };
 
-    const unsubscribe = onAuthStateChanged(auth, async (user) => {
-      if (user) {
-        console.log(JSON.stringify(user, null, 2));
-        setUserInfo(user);
-        await SecureStore.setItemAsync('accessToken', user.accessToken);
+  //   // checkLocalUser();
 
-        // Call the registerGoogleUser function here
-        await registerGoogleUser(user);
+  //   const unsubscribe = onAuthStateChanged(auth, async (user) => {
+  //     if (user) {
+  //       setUserInfo(user);
+  //       await SecureStore.setItemAsync('accessToken', user.accessToken);
 
-        navigation.navigate('Home-Screen');
-      } else {
-        setUserInfo(null);
-      }
-    });
+  //       navigation.navigate('Home-Screen');
+  //     }
+  //   });
 
-    return () => unsubscribe();
-  }, []);
-
-  const registerGoogleUser = async (userInfo) => {
-    try {
-      const res = await axios.post(`${SERVER_URL}/user/register/google`, {
-        email: userInfo.email,
-        full_name: userInfo.displayName,
-        _uid: userInfo.uid,
-      });
-
-      console.log('res:', res.data);
-    } catch (error) {
-      console.error('Error registering user:', error);
-    }
-  };
+  //   return () => unsubscribe();
+  // }, []);
 
   return (
     <SafeAreaView style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>

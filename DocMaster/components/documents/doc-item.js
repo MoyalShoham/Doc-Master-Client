@@ -7,6 +7,7 @@ import axios from 'axios';
 import { SERVER_URL } from '../../core/config';
 import * as SecureStore from 'expo-secure-store';
 import { FontAwesome } from '@expo/vector-icons';
+import { response } from 'axios';
 
 const DocItemDetails = ({ route, navigation }) => {
     const { item } = route.params;
@@ -25,6 +26,7 @@ const DocItemDetails = ({ route, navigation }) => {
                 });
                 setIsLiked(response.data.metadata.customMetadata.isLiked === 'true');
             } catch (error) {
+                console.log(response.data);
                 console.error('Error getting metadata:', error);
             }
         };
